@@ -7,12 +7,13 @@ android {
 
     defaultConfig {
         applicationId "com.hakura.GlassRevive"
-        minSdkVersion 16
-        targetSdkVersion 30
+        minSdkVersion 19
+        targetSdkVersion 20
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionNameSuffix 'GlassRevive'
     }
 
     buildTypes {

@@ -3,8 +3,10 @@ package com.hakura.GlassRevive;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tv = (TextView) MainActivity.context.findViewById(R.id.text_Status_Exp);
         tv.setText(expirationTime + "秒");
         exp.setProgress(expirationTime);
+        toggleNotificationListenerService();
 
         exp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -80,4 +83,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent_s);
     }
 
+    public void onReGivePermissionButtonClick(View v) {
+        toggleNotificationListenerService();
+        Toast.makeText(MainActivity.this,"成功",Toast.LENGTH_SHORT).show();
+    }
+
+    public void toggleNotificationListenerService(){
+        PackageManager pm = getPackageManager();
+        pm.setComponentEnabledSetting(new ComponentName(this, com.hakura.GlassRevive.NotificationListener.class),
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+
+        pm.setComponentEnabledSetting(new ComponentName(this, com.hakura.GlassRevive.NotificationListener.class),
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+    }
 }
