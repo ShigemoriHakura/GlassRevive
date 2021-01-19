@@ -16,6 +16,7 @@ import com.google.glass.companion.Glass.Envelope;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 public class MyGlassUtils {
@@ -37,7 +38,7 @@ public class MyGlassUtils {
         send(envelope2);
     }
 
-    public static void sendText(String subject, String text, String id) throws Exception{
+    public static void sendText(String subject, String text, String Bid, String id, int expirationTime) throws Exception{
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         String strDate= dateFormat.format(date);
@@ -46,11 +47,17 @@ public class MyGlassUtils {
                 GlassMessagingUtil.createTimelineMessage(
                         "<article> <section><p>" + subject + "</p> <p class=\"text-auto-size\">" + text + "</p> </section><footer>" + strDate + "</footer></article>",
                         text,
-                        id);
+                        Bid,
+                        id,
+                        expirationTime);
         send(envelope);
-
     }
 
+    public static void testText() throws Exception{
+        String id = "";
+        Glass.Envelope envelope = GlassMessagingUtil.deleteTimelineMessage(id);
+        send(envelope);
+    }
 
     public static void send(Glass.Envelope envelope) throws Exception{
         Log.d("GR","Sending Envelope");
@@ -123,27 +130,28 @@ public class MyGlassUtils {
 
                     MainActivity.context.runOnUiThread(new Runnable(){
                         public void run(){
-
                             String info = "";
                             info += "Device name: " + response.getDeviceName() + "\n";
                             info += "Battery: " + response.getBatteryLevel() + "%" + "\n";
                             info += "Software: " + response.getSoftwareVersion() + "\n";
                             info += "Storage: " + response.getExternalStorageAvailableBytes()/1000/1000 + "/" + response.getExternalStorageTotalBytes()/1000/1000
                                     + " MB available";
-
                             TextView tv = (TextView) MainActivity.context.findViewById(R.id.mainGlassText);
                             tv.setText(info);
                             tv.invalidate();
                         }
                     });
-
-
                 }
                 if (envelope.getCompanionInfo() != null) {
                     Glass.CompanionInfo companionInfo = envelope.getCompanionInfo();
                     String log = companionInfo.getResponseLog();
                     System.out.println(log);
                 }
+                if(envelope.getApiResponseG2C() != null){
+                    List TimelineItemList = envelope.getTimelineItemList();
+                    System.out.println(TimelineItemList.toString());
+                }
+                Log.d("GR-T", envelope.toString());
             }
 
             @Override
@@ -178,11 +186,11 @@ public class MyGlassUtils {
 
         c.close();
 
+        TextView tv = (TextView) MainActivity.context.findViewById(R.id.text_Status);
+        tv.setText("Done");
+        tv.invalidate();
+
         Log.d("GR","Wrote Message");
-
-
     }
-
-
 
 }

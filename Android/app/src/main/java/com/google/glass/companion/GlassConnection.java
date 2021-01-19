@@ -250,8 +250,7 @@ public class GlassConnection {
         }
 
         // handshaking
-
-        GlassInfoRequest glassInfoRequest = Glass.GlassInfoRequest.newBuilder()
+        /*GlassInfoRequest glassInfoRequest = Glass.GlassInfoRequest.newBuilder()
                 .setRequestBatteryLevel(true)
                 .setRequestStorageInfo(true)
                 .setRequestDeviceName(true)
@@ -261,7 +260,7 @@ public class GlassConnection {
                 .toBuilder()
                 .setGlassInfoRequestC2G(glassInfoRequest)
                 .build();
-        write(envelope2);
+        write(envelope2);*/
 
         try {
             Thread.sleep(300);
@@ -328,11 +327,6 @@ public class GlassConnection {
             try {
                 while (!Thread.currentThread().isInterrupted()) {
                     try { Envelope envelope = (Envelope) GlassProtocol.readMessage(Envelope.newBuilder().setVersion(Integer.valueOf(131078)).build(), mInStream);
-                        if (DEBUG) {
-                            if (envelope.getScreenshot() == null) {
-                                System.out.println("read:" + envelope);
-                            }
-                        }
                         if (envelope != null) {
                             synchronized (mListeners) {
                                 for (GlassConnectionListener listener : mListeners) {

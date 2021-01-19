@@ -205,7 +205,22 @@ message TimelineItem {
   optional string speakable_text = 19;
   optional string title = 23;
   optional string html = 24;
+  optional string bundle_id = 25;
+  optional string send_to_phone_url = 28;
+  optional bool is_bundle_cover = 29;
+  optional string source_item_id = 30;
+  optional string canonical_url = 31;
+  optional SyncStatus companion_sync_status = 33;
+  optional SyncProtocal companion_sync_protocol = 34;
+  optional uint64 pin_time = 35;
+  optional int32 pin_score = 36;
+  optional string source_account_id = 37;
   optional string speakable_type = 38;
+  optional uint64 expiration_time = 39;
+  optional ViewType view_type = 40;
+  repeated SharingFeature sharing_feature = 41;
+  optional ProgressStatus progress_status = 42;
+  repeated LinkSpec link_spec = 43;
 
   message ProgressStatus {
     optional string label = 1;

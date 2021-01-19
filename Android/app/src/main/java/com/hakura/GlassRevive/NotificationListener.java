@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import java.util.UUID;
+
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class NotificationListener extends NotificationListenerService {
 
@@ -45,7 +47,9 @@ public class NotificationListener extends NotificationListenerService {
                         " String - infoText: "+sbn.getNotification().extras.getString("android.infoText")+
                         " String - summaryText: "+sbn.getNotification().extras.getString("android.summaryText"));*/
                 //Log.e("GR_Notify", "Get Message" + "-----" + nMessage);
-                MyGlassUtils.sendText(nTitle, nMessage, sbn.getPackageName());
+                SharedPreferences sharedPreferences = getSharedPreferences("GlassRevive", MODE_PRIVATE);
+                int expirationTime =  sharedPreferences.getInt("expirationTime",60 * 5);
+                MyGlassUtils.sendText(nTitle, nMessage, sbn.getPackageName(), UUID.randomUUID().toString(), expirationTime);
             }
         } catch (Exception e) {
             Toast.makeText(MainActivity.context, "不可解析的通知", Toast.LENGTH_SHORT).show();

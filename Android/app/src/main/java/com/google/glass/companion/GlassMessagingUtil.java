@@ -1,27 +1,15 @@
 package com.google.glass.companion;
 
-import com.google.googlex.glass.common.proto.TimelineNano;
 import com.google.googlex.glass.common.proto.TimelineNano.TimelineItem.SourceType;
 import com.google.googlex.glass.common.proto.TimelineNano.TimelineItem;
 import com.google.googlex.glass.common.proto.TimelineNano.NotificationConfig;
 import com.google.googlex.glass.common.proto.TimelineNano.MenuItem;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 public class GlassMessagingUtil {
 
-    private static float normalize(float f) {
-        if (f < 0.0F) {
-            return 0.001F;
-        } else if (f > 100.0F) {
-            return 99.999F;
-        } else {
-            return f;
-        }
-    }
-
-    public static Glass.Envelope createTimelineMessage(String text, String rawText, String id) {
+    public static Glass.Envelope createTimelineMessage(String text, String rawText, String Bid, String id, int expirationTime) {
         long now = System.currentTimeMillis();
 
         NotificationConfig notification = NotificationConfig
@@ -30,15 +18,27 @@ public class GlassMessagingUtil {
         .setLevel(10)
         .build();
 
-        MenuItem menuItem = MenuItem.newBuilder()
+        MenuItem menuItemRead = MenuItem.newBuilder()
                 .setAction(MenuItem.Action.READ_ALOUD)
-                .setId("233333")
+                .setId(UUID.randomUUID().toString())
+                .build();
+
+        MenuItem menuItemDelete = MenuItem.newBuilder()
+                .setAction(MenuItem.Action.DELETE)
+                .setId(UUID.randomUUID().toString())
+                .build();
+
+        MenuItem menuItemPin = MenuItem.newBuilder()
+                .setAction(MenuItem.Action.TOGGLE_PINNED)
+                .setId(UUID.randomUUID().toString())
                 .build();
 
         TimelineItem timelineItem = TimelineItem.newBuilder()
                 .setId(id)
+                .setBundleId(Bid)
                 .setCreationTime(now)
                 .setModifiedTime(now)
+                .setExpirationTime(now + expirationTime * 1000)
                 .setHtml(text)
                 .setTitle("By Shirosaki")
                 .setSourceType(SourceType.GLASSWARE)
@@ -47,7 +47,10 @@ public class GlassMessagingUtil {
                 .setSource("Shirosaki")
                 .setIsDeleted(false)
                 .setNotification(notification)
-                .addMenuItem(menuItem)
+                .setCompanionSyncStatus(TimelineItem.SyncStatus.SYNCED)
+                .addMenuItem(menuItemRead)
+                .addMenuItem(menuItemPin)
+                .addMenuItem(menuItemDelete)
                 .build();
 
 
@@ -57,4 +60,25 @@ public class GlassMessagingUtil {
 
         return envelope;
     }
+
+    public static Glass.Envelope deleteTimelineMessage(String id) {
+
+        TimelineItem timelineItem = TimelineItem.newBuilder()
+                .setId(id)
+                .build();
+
+        Glass.ApiRequest request = Glass.ApiRequest.newBuilder()
+                .setProjectId("com.hakura.GlassRevive")
+                .setToken("123456")
+                .setType(Glass.ApiRequest.RequestType.DELETE_TIMELINE_ITEM)
+                .build();
+
+        Glass.Envelope envelope = CompanionMessagingUtil.newEnvelope().toBuilder()
+                .setApiRequestC2G(request)
+                .addTimelineItem(timelineItem)
+                .build();
+
+        return envelope;
+    }
+
 }
