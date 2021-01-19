@@ -28,7 +28,7 @@ public class NotificationListener extends NotificationListenerService {
         try {
             //有些通知不能解析出TEXT内容，这里做个信息能判断
             if (sbn.getNotification().tickerText != null) {
-                //Log.i("GR_Notify", "get"+"-----"+sbn.getNotification().toString());
+                Log.i("GR_Notify", "get"+"-----"+sbn.getNotification().toString());
                 SharedPreferences sp = getSharedPreferences("msg", MODE_PRIVATE);
                 String nTitle = sbn.getNotification().extras.getString("android.title");
                 String nMessage = sbn.getNotification().extras.getString("android.text");
