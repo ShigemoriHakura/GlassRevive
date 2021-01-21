@@ -97,9 +97,6 @@ public class MyGlassUtils {
             }
         }
 
-
-
-
         c = new GlassConnection();
 
         c.connect(device);
@@ -151,7 +148,6 @@ public class MyGlassUtils {
                     List TimelineItemList = envelope.getTimelineItemList();
                     System.out.println(TimelineItemList.toString());
                 }
-                Log.d("GR-T", envelope.toString());
             }
 
             @Override

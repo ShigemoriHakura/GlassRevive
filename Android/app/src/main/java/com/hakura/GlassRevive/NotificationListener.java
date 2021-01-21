@@ -27,9 +27,8 @@ public class NotificationListener extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
         try {
             //有些通知不能解析出TEXT内容，这里做个信息能判断
+            //思考要不要把sdk版本提上去
             if (sbn.getNotification().tickerText != null) {
-                Log.i("GR_Notify", "get"+"-----"+sbn.getNotification().toString());
-                SharedPreferences sp = getSharedPreferences("msg", MODE_PRIVATE);
                 String nTitle = sbn.getNotification().extras.getString("android.title");
                 String nMessage = sbn.getNotification().extras.getString("android.text");
 
@@ -48,10 +47,11 @@ public class NotificationListener extends NotificationListenerService {
                         " String - summaryText: "+sbn.getNotification().extras.getString("android.summaryText"));*/
                 //Log.e("GR_Notify", "Get Message" + "-----" + nMessage);
                 SharedPreferences sharedPreferences = getSharedPreferences("GlassRevive", MODE_PRIVATE);
-                int expirationTime =  sharedPreferences.getInt("expirationTime",60 * 5);
+                int expirationTime = sharedPreferences.getInt("expirationTime",60 * 5);
                 MyGlassUtils.sendText(nTitle, nMessage, sbn.getPackageName(), UUID.randomUUID().toString(), expirationTime);
             }
         } catch (Exception e) {
+            //Log.e("GR_Notify_Error", e.getLocalizedMessage());
             Toast.makeText(MainActivity.context, "不可解析的通知", Toast.LENGTH_SHORT).show();
         }
 

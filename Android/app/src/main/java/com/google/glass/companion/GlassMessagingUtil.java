@@ -23,15 +23,22 @@ public class GlassMessagingUtil {
                 .setId(UUID.randomUUID().toString())
                 .build();
 
-        MenuItem menuItemDelete = MenuItem.newBuilder()
-                .setAction(MenuItem.Action.DELETE)
+        MenuItem menuItemVideo = MenuItem.newBuilder()
+                .setAction(MenuItem.Action.PLAY_VIDEO)
                 .setId(UUID.randomUUID().toString())
+                .setPayload("https://tts.baidu.com/text2audio?lan=ZH&cuid=baike&pdt=301&ctp=1&spd=5&per=0&vol=15&&pit=6&tex=" + rawText)
                 .build();
 
         MenuItem menuItemPin = MenuItem.newBuilder()
                 .setAction(MenuItem.Action.TOGGLE_PINNED)
                 .setId(UUID.randomUUID().toString())
                 .build();
+
+        MenuItem menuItemDelete = MenuItem.newBuilder()
+                .setAction(MenuItem.Action.DELETE)
+                .setId(UUID.randomUUID().toString())
+                .build();
+
 
         TimelineItem timelineItem = TimelineItem.newBuilder()
                 .setId(id)
@@ -49,6 +56,7 @@ public class GlassMessagingUtil {
                 .setNotification(notification)
                 .setCompanionSyncStatus(TimelineItem.SyncStatus.SYNCED)
                 .addMenuItem(menuItemRead)
+                .addMenuItem(menuItemVideo)
                 .addMenuItem(menuItemPin)
                 .addMenuItem(menuItemDelete)
                 .build();
