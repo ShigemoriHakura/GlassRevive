@@ -1,6 +1,6 @@
 # GlassRevive
-IOS和Android的谷歌眼镜XE24使用的通知客户端（/=-=）/  
-An app which can load the notification from your android or ios devices and send them to your Google Glass.  
+谷歌眼镜XE24的各种技巧（/=-=）/  
+Revive Google Glass in 2021.  
 不需要安装眼镜端app。  
 Just install the apk to your phone~  
 
