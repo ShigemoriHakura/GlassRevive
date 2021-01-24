@@ -1,0 +1,285 @@
+package com.google.googlex.glass.common.proto;
+
+option java_outer_classname = "TimelineNano";
+
+message Attachment {
+  optional string id = 1;
+  optional string content_type = 2;
+  optional string content_url = 3;
+  optional string thumbnail_url = 4;
+  optional string client_cache_path = 5;
+  optional uint64 creation_time = 6;
+  optional bool is_processing_content = 7;
+  optional string source = 8;
+}
+
+message Entity {
+  optional string source = 1;
+  optional string id = 2;
+  optional string display_name = 3;
+  optional bool should_sync = 5;
+  optional Type type = 6;
+  optional string phone_number = 7;
+  optional string email = 8;
+  repeated string accept_type = 9;
+  optional bool is_communication_target = 10;
+  repeated string image_url = 12;
+  repeated string secondary_phone_number = 13;
+  optional Priority priority = 14;
+  repeated string secondary_email = 15;
+  repeated Command accept_command = 16;
+  optional string speakable_name = 17;
+  repeated ContactGroup contact_group = 20;
+  optional uint64 creation_time = 21;
+  repeated MessagingPersona messaging_persona = 22;
+  optional string nickname = 23;
+  optional MessagingOption messaging_option = 25;
+  optional string full_name = 26;
+  repeated SharingFeature sharing_feature = 27;
+  optional string obfuscated_gaia_id = 28;
+
+  enum Type {
+    GROUP = 0;
+    INDIVIDUAL = 1;
+  }
+
+  message Priority {
+    optional uint32 glassware_affinity = 1;
+  }
+
+  message Command {
+    optional CommandType type = 1;
+    optional bool is_voice_enabled = 2;
+    optional InputType input_type = 3;
+    optional string pending_label = 4;
+    optional string completion_label = 5;
+    optional InvocationMode invocation_mode = 6;
+
+    enum CommandType {
+      TAKE_A_NOTE = 0;
+      POST_AN_UPDATE = 1;
+      CHECK_ME_IN = 2;
+      ADD_A_CALENDAR_EVENT = 3;
+      FIND_A_RECIPE = 4;
+      FIND_A_PLACE = 5;
+      EXPLORE_NEARBY = 6;
+    }
+
+    enum InputType {
+      WEB_SEARCH = 0;
+      LOCAL_SEARCH = 1;
+      DICTATION = 2;
+      NO_INPUT = 3;
+    }
+
+    enum InvocationMode {
+      DEFAULT = 0;
+      BLOCKING = 1;
+      NON_BLOCKING = 2;
+    }
+  }
+
+  enum ContactGroup {
+    MY_CONTACTS = 0;
+  }
+
+  enum MessagingOption {
+    PERSONA = 0;
+    EMAIL = 1;
+    SMS = 2;
+  }
+}
+
+message LinkSpec {
+  optional uint32 start = 1;
+  optional uint32 end = 2;
+  optional string url = 3;
+}
+
+message Location {
+  optional double latitude = 1;
+  optional double longitude = 2;
+  optional string display_name = 3;
+  optional string address = 4;
+  optional uint64 timestamp = 5;
+  optional double accuracy = 6;
+  optional string id = 7;
+  optional string level_id = 8;
+  optional float level_number = 9;
+  optional string source = 10;
+}
+
+message MenuItem {
+  optional string id = 1;
+  optional Action action = 2;
+  repeated MenuValue value = 3;
+  optional string broadcast_action = 5;
+  optional bool remove_when_selected = 7;
+  optional TravelMode travel_mode = 8;
+  optional Entity recipient = 9;
+  optional string payload = 10;
+
+  enum Action {
+    CUSTOM = 0;
+    REPLY = 2;
+    DELETE = 3;
+    SHARE = 4;
+    READ_ALOUD = 5;
+    REPLY_ALL = 6;
+    BROADCAST = 7;          // FUCK
+    VOICE_CALL = 8;
+    NAVIGATE = 9;
+    SEARCH = 10;
+    MUTE_MIC = 11;          // FUCK
+    SEND_TO_PHONE = 12;     // FUCK
+    OPEN_URI = 13;
+    HANGOUT = 14;           // GOOD!
+    TOGGLE_PINNED = 15;
+    READ_MORE = 16;
+    PLAY_VIDEO = 17;
+    SEND_MESSAGE = 18;      // GOOD!
+    VOLUME = 19;            // GOOD!
+    SHOW_RECIPIENTS = 20;   // GOOD!
+    SEND = 21;              // GOOD!
+    GET_MEDIA_INPUT = 22;   // GOOD!
+  }
+
+  enum State {
+    DEFAULT = 0;
+    PENDING = 1;
+    CONFIRMED = 2;
+  }
+
+  enum TravelMode {
+    MOST_RECENTLY_USED = 0;
+    DRIVING = 1;
+    WALKING = 2;
+    BICYCLING = 3;
+    TRANSIT = 4;
+  }
+}
+
+message MenuValue {
+  optional string display_name = 1;
+  optional string icon_url = 2;
+  optional MenuItem.State state = 3;
+}
+
+message MessagingPersona {
+  optional string source = 1;
+  optional string persona_id = 2;
+  optional bool is_default = 3;
+  repeated string accept_type = 4;
+  repeated SharingFeature sharing_feature = 5;
+}
+
+message NotificationConfig {
+  enum Level {
+    DEFAULT = 10;
+  }
+
+  optional uint64 level = 1;
+  optional uint64 delivery_time = 2;
+}
+
+enum SharingFeature {
+  ADD_CAPTION = 0;
+}
+
+message TimelineItem {
+  optional string id = 1;
+  optional uint64 creation_time = 2;
+  optional uint64 modified_time = 3;
+  optional string source = 4;
+  optional Entity creator = 5;
+  repeated Entity shareTarget = 6;
+  optional string in_reply_to = 7;
+  optional string text = 8;
+  repeated Attachment attachment = 9;
+  optional Location location = 10;
+  repeated MenuItem menuItem = 11;
+  optional SourceType source_type = 14;
+  optional bool is_deleted = 15;
+  optional NotificationConfig notification = 16;
+  optional uint64 display_time = 17;
+  optional string speakable_text = 19;
+  optional string title = 23;
+  optional string html = 24;
+  optional string bundle_id = 25;
+  optional string send_to_phone_url = 28;
+  optional bool is_bundle_cover = 29;
+  optional string source_item_id = 30;
+  optional string canonical_url = 31;
+  optional SyncStatus companion_sync_status = 33;
+  optional SyncProtocal companion_sync_protocol = 34;
+  optional uint64 pin_time = 35;
+  optional int32 pin_score = 36;
+  optional string source_account_id = 37;
+  optional string speakable_type = 38;
+  optional uint64 expiration_time = 39;
+  optional ViewType view_type = 40;
+  repeated SharingFeature sharing_feature = 41;
+  optional ProgressStatus progress_status = 42;
+  repeated LinkSpec link_spec = 43;
+
+  message ProgressStatus {
+    optional string label = 1;
+  }
+
+  enum SmsType {
+    NATIVE = 0;
+    GOOGLE_VOICE = 1;
+    COMPANION_DECIDES = 2;
+  }
+
+  enum SourceType {
+    GLASSWARE = 0;
+    GLASS_DEVICE = 1;
+    COMPANIONWARE = 2;
+  }
+
+  enum SyncStatus {
+    NOT_SYNCED = 0;
+    SYNCED = 1;
+    SYNC_FAILED = 2;
+  }
+
+  enum SyncProtocal {
+    ALWAYS = 0;
+    OPPORTUNISTIC = 1;
+    NEVER = 2;
+  }
+
+  enum ViewType {
+    UNSET = -1;
+    TEXT = 0;
+    MESSAGE = 1;
+    IMAGE = 2;
+    VIDEO = 3;
+    HTML = 4;
+    SEARCH = 5;
+    CALL = 6;
+    HANGOUT = 7;
+    SOUND_SEARCH = 8;
+    MUSIC = 9;
+    CONNECTIVITY_STATUS = 10;
+  }
+}
+
+message UserAction {
+  optional Type type = 1;
+  optional string payload = 2;
+
+  enum Type {
+    NEW_MESSAGE = 1;
+    SHARE = 2;
+    REPLY = 3;
+    REPLY_ALL = 4;
+    CUSTOM = 5;
+    DELETE = 6;
+    LAUNCH = 7;
+    PIN = 8;
+    UNPIN = 9;
+    GET_MEDIA_INPUT = 10;
+  }
+}

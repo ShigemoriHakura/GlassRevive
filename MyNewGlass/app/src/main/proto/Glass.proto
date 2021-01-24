@@ -1,0 +1,254 @@
+package com.google.glass.companion;
+
+import "TimelineNano.proto";
+
+message Envelope {
+  required uint32 version = 1;
+  optional uint32 serial_number = 2;
+  optional uint64 time_millis = 3;
+  optional uint64 uptime_millis = 4;
+  repeated com.google.googlex.glass.common.proto.TimelineItem timeline_item = 5;
+  optional LocationRequest location_request_G2C = 6;
+  optional LocationMessage location_message_C2G = 7;
+  optional string message_C2G = 8;
+  optional string timezone_C2G = 9;
+  optional NavigationRequest navigation_request_C2G = 10;
+  optional string url_G2C = 11;
+  optional string setup_wifi_C2G = 12;
+  optional CompanionInfo companion_info = 13;
+  optional Error error = 14;
+  optional ScreenShot screenshot = 15;
+  optional Command command = 16;
+  repeated TimelineItemResponse timeline_item_response_C2G = 17;
+  optional ApiRequest api_request_C2G = 18;
+  optional ApiResponse api_response_G2C = 19;
+  optional MotionEvent motion_C2G = 20;
+  optional GlassInfoRequest glass_info_request_C2G = 21;
+  optional GlassInfoResponse glass_info_response_G2C = 22;
+  optional InputBoxRequest input_box_request_G2C = 23;
+  optional InputBoxResponse input_box_response_C2G = 24;
+  optional GlassSetupRequest glass_setup_request_C2G = 25;
+  optional GlassSetupResponse glass_setup_response_G2C = 26;
+  optional Photo photoG2C = 28;
+  optional AndroidDeviceInfo android_Device_Info = 30;
+  optional CompanionFeatureInfo companion_feature_info = 32;
+  optional GlassFeatureInfo glass_feature_info_G2C = 33;
+}
+
+message AndroidDeviceInfo{
+  optional int64 sdkVersion = 1;
+}
+
+
+message GlassFeatureInfo{
+  optional bool isWallpaperFeatureEnabled = 1;
+}
+
+message CompanionFeatureInfo{
+  optional bool isPhotoSyncEnabled = 1;
+  optional bool isKeyboardTextEntrySupported = 2;
+}
+
+message Photo {
+  optional int64 numOfPhotosToSync_ = 10;
+  optional int64 op_ = 8;
+  optional string photoId_ = 4;
+  optional bytes thumbnailBytes_ = 1;
+  optional int64 timestamp_ = 2;
+}
+
+message ApiRequest {
+  enum RequestType {
+    INSERT_OR_UPDATE_TIMELINE_ITEM = 0;
+    DELETE_TIMELINE_ITEM = 1;
+  }
+
+  optional string project_id = 1;
+  optional string token = 2;
+  optional RequestType type = 3;
+  optional com.google.googlex.glass.common.proto.TimelineItem timeline_item = 4;
+  repeated bytes attachment_content = 5;
+}
+
+message ApiResponse {
+  enum ResponseType {
+    USER_ACTION = 0;
+  }
+
+  optional ResponseType type = 1;
+  optional com.google.googlex.glass.common.proto.TimelineItem timeline_item = 2;
+  optional com.google.googlex.glass.common.proto.UserAction user_action = 3;
+}
+
+message Command {
+  enum CommandType {
+    UNPAIR = 0;
+    START_DEBUG = 1;
+    STOP_DEBUG = 2;
+  }
+
+  required CommandType command = 1;
+}
+
+message CompanionInfo {
+  required int64 id = 1;
+  optional bool request_network = 2;
+  optional bool response_is_network_ok = 3;
+  optional int32 response_android_version = 4;
+  optional bool request_log = 5;
+  optional string response_log = 6;
+  optional bool request_locale_info = 7;
+  optional string response_locale_info = 8;
+}
+
+message Error {
+  enum ErrorType {
+    TETHERING_ERROR_ON_GLASS = 0;
+    SMS_GOOGLE_VOICE_NOT_INSTALLED = 1;
+    SMS_GOOGLE_VOICE_NEEDS_UPDATE = 2;
+  }
+
+  required ErrorType type = 1;
+}
+
+message GlassInfoRequest {
+  optional bool request_battery_level = 1;
+  optional bool request_storage_info = 2;
+  optional bool request_device_name = 3;
+  optional bool request_software_version = 4;
+  optional bool request_need_setup = 5;
+}
+
+message GlassInfoResponse {
+  optional int32 battery_level = 1;
+  optional int64 external_storage_total_bytes = 2;
+  optional int64 external_storage_available_bytes = 3;
+  optional string device_name = 4;
+  optional string software_version = 5;
+  optional bool need_setup = 6;
+}
+
+message GlassSetupRequest {
+  optional string setup_string = 1;
+}
+
+message GlassSetupResponse {
+  enum SetupStatus {
+    OK = 1;
+    FAILED = 2;
+  }
+
+  optional SetupStatus setup_status = 1;
+}
+
+message InputBoxRequest {
+  optional bool dismiss_input_box = 1;
+  optional int32 input_type = 2;
+  optional string summary_text = 3;
+  optional string hint_text = 4;
+  optional bytes handler_object = 5;
+}
+
+message InputBoxResponse {
+  optional string response = 1;
+  optional bytes handler_object = 2;
+}
+
+message Location {
+  optional double latitude = 1;
+  optional double longitude = 2;
+  optional float accuracy = 3;
+  optional double altitude = 4;
+  optional float bearing = 5;
+  optional float speed = 6;
+  optional uint64 time = 7;
+  optional int32 satellites_used_in_fix = 8;
+  optional int32 visible_satellites = 9;
+  optional string level_id = 10;
+  optional int32 level_number_E3 = 11;
+}
+
+message LocationMessage {
+  enum MessageType {
+    LOCATION_CHANGED = 0;
+    PROVIDER_DISABLED = 1;
+    PROVIDER_ENABLED = 2;
+    STATUS_CHANGED = 3;
+  }
+
+  required MessageType type = 1;
+  required string provider = 2;
+  optional Location location = 3;
+  optional int32 status = 4;
+  optional string receiver = 5;
+}
+
+message LocationRequest {
+  enum RequestType {
+    START_LISTENING = 0;
+    STOP_LISTENING = 1;
+  }
+
+  enum Priority {
+    PRIORITY_UNKNOWN = 0;
+    PRIORITY_HIGH_ACCURACY = 1;
+    PRIORITY_BALANCED_POWER_ACCURACY = 2;
+  }
+
+  required RequestType type = 1;
+  required string provider = 2;
+  optional int64 mim_time = 3;
+  optional float min_distance = 4;
+  optional bool send_last_known_location = 5;
+  optional Priority priority = 6;
+  optional int64 fastest_interval = 7;
+}
+
+message MotionEvent {
+  message PointerProperties {
+    optional int32 id = 1;
+    optional int32 tool_type = 2;
+  }
+
+  message PointerCoords {
+    optional float orientation = 1;
+    optional float pressure = 2;
+    optional float size = 3;
+    optional float tool_major = 4;
+    optional float tool_minor = 5;
+    optional float touch_major = 6;
+    optional float touch_minor = 7;
+    optional float x = 8;
+    optional float y = 9;
+  }
+
+  optional uint64 down_time = 1;
+  optional uint64 event_time = 2;
+  optional int32 action = 3;
+  optional int32 pointer_count = 4;
+  repeated PointerProperties pointer_properties = 5;
+  repeated PointerCoords pointer_coords = 6;
+  optional int32 meta_state = 7;
+  optional int32 button_state = 8;
+  optional float x_precision = 9;
+  optional float y_precision = 10;
+  optional int32 device_id = 11;
+  optional int32 edge_flags = 12;
+  optional int32 source = 13;
+  optional int32 flags = 14;
+}
+
+message NavigationRequest {
+  optional string uri = 1;
+}
+
+message ScreenShot {
+  optional bool start_screenshot_request_C2G = 1;
+  optional bool stop_screenshot_request_C2G = 2;
+  optional bytes screenshot_bytes_G2C = 3;
+}
+
+message TimelineItemResponse {
+  optional string id = 1;
+  optional int32 sync_status = 3;
+}
