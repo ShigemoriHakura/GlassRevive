@@ -80,7 +80,7 @@ public class GlassProtocol {
         BufferedOutputStream localBufferedOutputStream = new BufferedOutputStream(paramOutputStream,
                 getSizeToWrite(cachedSize + sizeOfSize(cachedSize)));
         writeSize(cachedSize, localBufferedOutputStream);
-        Log.d("MyNewGlass|Write",paramMessageNano.toString());
+        Log.d("GlassRevive|Write",paramMessageNano.toString());
         localBufferedOutputStream.write(paramMessageNano.toByteArray());
         localBufferedOutputStream.flush();
     }

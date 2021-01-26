@@ -1,5 +1,7 @@
 package com.hakura.GlassRevive.Glass;
 
+import android.util.Log;
+
 import com.google.glass.companion.Glass;
 import com.google.glass.companion.Glass.Envelope;
 import com.google.glass.companion.Glass.CompanionInfo;
@@ -43,7 +45,7 @@ public class GlassUtil {
                 .build();
     }
 
-    public static Envelope createTimelineMessage(String text, String rawText, String Bid, String id, int expirationTime) {
+    public static Envelope createTimelineMessage(String text, String rawText, String Bid, String id, int expirationTime, boolean enableTTS) {
         long now = System.currentTimeMillis();
 
         NotificationConfig notification = NotificationConfig
@@ -57,11 +59,11 @@ public class GlassUtil {
                 .setId(UUID.randomUUID().toString())
                 .build();
 
-        /*MenuItem menuItemVideo = MenuItem.newBuilder()
+        MenuItem menuItemVideo = MenuItem.newBuilder()
                 .setAction(MenuItem.Action.PLAY_VIDEO)
                 .setId(UUID.randomUUID().toString())
                 .setPayload("https://tts.baidu.com/text2audio?lan=ZH&cuid=baike&pdt=301&ctp=1&spd=5&per=0&vol=15&&pit=6&tex=" + rawText)
-                .build();*/
+                .build();
 
         MenuItem menuItemPin = MenuItem.newBuilder()
                 .setAction(MenuItem.Action.TOGGLE_PINNED)
@@ -90,20 +92,22 @@ public class GlassUtil {
                 .setNotification(notification)
                 .setCompanionSyncStatus(TimelineItem.SyncStatus.SYNCED)
                 .addMenuItem(menuItemRead)
-                //.addMenuItem(menuItemVideo)
                 .addMenuItem(menuItemPin)
                 .addMenuItem(menuItemDelete)
                 .build();
 
+        if(enableTTS){
+            Log.d("GlassRevive", "Added TTS Link");
+            timelineItem = timelineItem.toBuilder().addMenuItem(menuItemVideo).build();
+        }
 
         Envelope envelope = GlassUtil.newEnvelope().toBuilder()
                 .addTimelineItem(timelineItem)
                 .build();
-
         return envelope;
     }
 
-    public static Envelope returnText(String subject, String text, String Bid, String id, int expirationTime) throws Exception{
+    public static Envelope returnText(String subject, String text, String Bid, String id, int expirationTime, boolean enableTTS) throws Exception{
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         String strDate= dateFormat.format(date);
@@ -113,7 +117,8 @@ public class GlassUtil {
                         text,
                         Bid,
                         id,
-                        expirationTime);
+                        expirationTime,
+                        enableTTS);
         return envelope;
     }
 }

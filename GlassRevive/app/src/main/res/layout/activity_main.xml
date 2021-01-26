@@ -7,14 +7,14 @@
     tools:context=".MainActivity">
 
     <Switch
-        android:id="@+id/Switch_DownloadTTS"
+        android:id="@+id/Switch_EnableTTS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Download TTS"
+        android:text="Enable TTS"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Switch_Location" />
+        app:layout_constraintTop_toBottomOf="@+id/TextView_ExpTimeLabel" />
 
     <EditText
         android:id="@+id/InputMessage"
@@ -65,10 +65,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text="Settings"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InputMessage"
-        tools:text="Settings" />
+        app:layout_constraintTop_toBottomOf="@+id/InputMessage" />
 
     <TextView
         android:id="@+id/TextView_Test"
@@ -76,42 +75,31 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:text="Test"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Test" />
-
-    <Button
-        android:id="@+id/Button_Status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Status"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Switch_DownloadTTS" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/Button_GivePermission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:onClick="onGivePermissionButtonClick"
-        android:text="Listener"
-        app:layout_constraintStart_toEndOf="@+id/Button_Status"
-        app:layout_constraintTop_toBottomOf="@+id/Switch_DownloadTTS" />
+        android:text="Permission"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TextView_Listener" />
 
     <Button
         android:id="@+id/Button_Reload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:onClick="onReGivePermissionButtonClick"
-        android:text="Reload"
+        android:text="Reload Listener"
         app:layout_constraintStart_toEndOf="@+id/Button_GivePermission"
-        app:layout_constraintTop_toBottomOf="@+id/Switch_DownloadTTS" />
+        app:layout_constraintTop_toBottomOf="@+id/TextView_Listener" />
 
     <SeekBar
         android:id="@+id/SeekBar_Exp"
@@ -143,14 +131,34 @@
         app:layout_constraintStart_toEndOf="@+id/SeekBar_Exp"
         app:layout_constraintTop_toBottomOf="@+id/TextView_Settings" />
 
-    <Switch
-        android:id="@+id/Switch_Location"
+    <TextView
+        android:id="@+id/TextView_Log"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Upload Location"
+        android:text="=-="
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextView_ExpTimeLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/TextView_LogName" />
+
+    <TextView
+        android:id="@+id/TextView_Listener"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Notification Listener"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Switch_EnableTTS" />
+
+    <TextView
+        android:id="@+id/TextView_LogName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Log"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Button_GivePermission" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
