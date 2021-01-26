@@ -30,3 +30,4 @@ Just install the apk to your phone~
 * https://github.com/ieee8023/JoeGlass/
 * https://github.com/xingrz/glass-research
 * https://developers.google.com/glass/v1/reference/timeline/
+* https://github.com/ShigemoriHakura/Google-Glass-Proto
