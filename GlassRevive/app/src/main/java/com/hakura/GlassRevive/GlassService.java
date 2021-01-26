@@ -62,7 +62,7 @@ public class GlassService extends Service {
                 mConnectedThread.writeAsync(GlassUtil.returnText(
                         intent.getStringExtra("title"),
                         intent.getStringExtra("text"),
-                        "com.hakura.GlassRevive",
+                        intent.getStringExtra("bid"),
                         intent.getStringExtra("uuid"),
                         intent.getIntExtra("expirationTime", 300),
                         intent.getBooleanExtra("enableTTS", false)
@@ -97,6 +97,7 @@ public class GlassService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(TimelineReceiver);
         stopThread = true;
         if (mConnectedThread != null) {
             mConnectedThread.closeStreams();
@@ -298,6 +299,25 @@ public class GlassService extends Service {
                     Log.d("GlassRevive|Get", envelope.toString());
                     sendIntent("Status", "Get Envelope");
                     sendIntent("Log", String.valueOf(envelope));
+                    if(envelope.hasCompanionInfo()){
+                        Log.d("GlassRevive|Sent", "Not Null CompanionInfo");
+                        if(envelope.getCompanionInfo().hasRequestLocaleInfo() && envelope.getCompanionInfo().getRequestLocaleInfo()){
+                            Glass.LocaleInfo LocaleInfo = Glass.LocaleInfo.newBuilder()
+                                    .setNetworkBasedCountryIso("CN")
+                                    .setSimBasedCountryIso("CN")
+                                    .build();
+                            CompanionInfo companionInfo = CompanionInfo.newBuilder()
+                                    .setResponseLocaleInfo(LocaleInfo)
+                                    .setId(envelope.getCompanionInfo().getId())
+                                    .build();
+                            Glass.Envelope env = GlassUtil.newEnvelope()
+                                    .toBuilder()
+                                    .setCompanionInfo(companionInfo)
+                                    .build();
+                            Log.d("GlassRevive|Sent", "Locale info");
+                            mConnectedThread.write(env);
+                        }
+                    }
                 } catch (IOException e) {
                     Log.d("DEBUG BT", e.toString());
                     Log.d("BT SERVICE", "UNABLE TO READ/WRITE, STOPPING SERVICE");

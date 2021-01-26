@@ -38,6 +38,7 @@ public class NotificationListener extends NotificationListenerService {
                 intent.putExtra("title", nTitle);
                 intent.putExtra("text", nMessage);
                 intent.putExtra("uuid", UUID.randomUUID().toString());
+                intent.putExtra("bid", sbn.getPackageName());
                 intent.putExtra("expirationTime", expirationTime);
                 intent.putExtra("enableTTS", enableTTS);
                 sendBroadcast(intent);

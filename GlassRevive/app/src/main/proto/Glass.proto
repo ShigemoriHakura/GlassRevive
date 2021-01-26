@@ -98,7 +98,12 @@ message CompanionInfo {
   optional bool request_log = 5;
   optional string response_log = 6;
   optional bool request_locale_info = 7;
-  optional string response_locale_info = 8;
+  optional LocaleInfo response_locale_info = 8;
+}
+
+message LocaleInfo{
+  optional string networkBasedCountryIso = 1;
+  optional string simBasedCountryIso = 2;
 }
 
 message Error {

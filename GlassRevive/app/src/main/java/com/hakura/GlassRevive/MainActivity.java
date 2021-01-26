@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("title", "Hi");
             intent.putExtra("text", text.getText().toString());
             intent.putExtra("uuid", UUID.randomUUID().toString());
+            intent.putExtra("bid", "com.hakura.GlassRevive");
             intent.putExtra("expirationTime", expirationTime);
             intent.putExtra("enableTTS", enableTTS);
             sendBroadcast(intent);

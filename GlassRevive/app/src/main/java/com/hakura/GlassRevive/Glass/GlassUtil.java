@@ -27,7 +27,7 @@ public class GlassUtil {
 
     public static Envelope newEnvelope() {
         CompanionFeatureInfo companionFeatureInfo = CompanionFeatureInfo.newBuilder()
-                .setIsPhotoSyncEnabled(false)
+                .setIsPhotoSyncEnabled(true)
                 .setIsKeyboardTextEntrySupported(false)
                 .build();
 
@@ -40,8 +40,8 @@ public class GlassUtil {
         return Envelope.newBuilder()
                 .setVersion(PROTOCOL_VERSION)
                 .setUptimeMillis(System.currentTimeMillis())
-                .setCompanionInfo(companionInfo)
-                .setCompanionFeatureInfo(companionFeatureInfo)
+                //.setCompanionInfo(companionInfo)
+                //.setCompanionFeatureInfo(companionFeatureInfo)
                 .build();
     }
 
