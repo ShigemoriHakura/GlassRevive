@@ -1,7 +1,9 @@
 package com.hakura.GlassRevive;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -31,15 +33,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sharedPreferences = getSharedPreferences("MyNewGlass", MODE_PRIVATE);
+        ActivityCompat.requestPermissions(MainActivity.this,
+                 new String[]{
+                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                         Manifest.permission.READ_EXTERNAL_STORAGE,
+                         Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS
+                 }, 1);
+
+        sharedPreferences = getSharedPreferences("GlassRevive", MODE_PRIVATE);
         int expirationTime = sharedPreferences.getInt("expirationTime",60 * 5);
         boolean enableTTS = sharedPreferences.getBoolean("enableTTS",false);
+        boolean enablePhotoSync = sharedPreferences.getBoolean("enablePhotoSync",false);
         Switch sw = findViewById(R.id.Switch_EnableTTS);
         sw.setChecked(enableTTS);
+        Switch ps = findViewById(R.id.Switch_Photosync);
+        ps.setChecked(enablePhotoSync);
 
         sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("enableTTS", isChecked);
+            editor.apply();
+        });
+
+        ps.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("enablePhotoSync", isChecked);
             editor.apply();
         });
 

@@ -9,11 +9,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -29,6 +33,10 @@ import com.google.glass.companion.Glass.GlassInfoResponse;
 import com.google.glass.companion.Glass.GlassInfoRequest;
 import com.hakura.GlassRevive.Glass.GlassUtil;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -298,9 +306,9 @@ public class GlassService extends Service {
                     Glass.Envelope envelope = (Glass.Envelope) GlassProtocol.readMessage(Glass.Envelope.newBuilder().setVersion(Integer.valueOf(0)).build(), mmInStream);
                     Log.d("GlassRevive|Get", envelope.toString());
                     sendIntent("Status", "Get Envelope");
-                    sendIntent("Log", String.valueOf(envelope));
+                    //sendIntent("Log", String.valueOf(envelope));
                     if(envelope.hasCompanionInfo()){
-                        Log.d("GlassRevive|Sent", "Not Null CompanionInfo");
+                        Log.d("GlassRevive|Get", "Not Null CompanionInfo");
                         if(envelope.getCompanionInfo().hasRequestLocaleInfo() && envelope.getCompanionInfo().getRequestLocaleInfo()){
                             Glass.LocaleInfo LocaleInfo = Glass.LocaleInfo.newBuilder()
                                     .setNetworkBasedCountryIso("CN")
@@ -316,6 +324,43 @@ public class GlassService extends Service {
                                     .build();
                             Log.d("GlassRevive|Sent", "Locale info");
                             mConnectedThread.write(env);
+                        }
+                    }
+                    if(envelope.hasGlassInfoResponseG2C()){
+                        final Glass.GlassInfoResponse response = envelope.getGlassInfoResponseG2C();
+                        String info = "Device name: " + response.getDeviceName() + "\n" +
+                                "Battery: " + response.getBatteryLevel() + "%" + "\n" +
+                                "Software: " + response.getSoftwareVersion() + "\n" +
+                                "Storage: " + response.getExternalStorageAvailableBytes()/1000/1000 + "/" + response.getExternalStorageTotalBytes()/1000/1000
+                                + " MB available";
+                        sendIntent("Log", info);
+                    }
+                    if(envelope.hasPhotoG2C()){
+                        Log.d("GlassRevive|Get", "PhotoSync");
+                        Glass.Photo PhotoG2C = envelope.getPhotoG2C();
+                        SharedPreferences sharedPreferences = getSharedPreferences("GlassRevive", MODE_PRIVATE);
+                        boolean enablePhotoSync = sharedPreferences.getBoolean("enablePhotoSync",false);
+                        if(enablePhotoSync && PhotoG2C.hasThumbnailBytes()){
+                            Log.d("GlassRevive|Get", "Saving");
+                            File appDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsoluteFile();
+                            if (!appDir.exists()) {
+                                Log.d("GlassRevive|Get", "No Dir");
+                                appDir.mkdir();
+                            }
+                            String fileName = PhotoG2C.getPhotoId() + ".jpg";
+                            File file = new File(appDir, fileName);
+                            try {
+                                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                                BufferedOutputStream bStream = new BufferedOutputStream(fileOutputStream);
+                                bStream.write(PhotoG2C.getThumbnailBytes().toByteArray());
+                                //MediaStore.Images.Media.insertImage(getApplication().getContentResolver(), file.getAbsolutePath(), fileName, null);
+                                getApplication().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + "")));
+                                Log.d("GlassRevive|Get", "Done");
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 } catch (IOException e) {

@@ -41,7 +41,7 @@ public class GlassUtil {
                 .setVersion(PROTOCOL_VERSION)
                 .setUptimeMillis(System.currentTimeMillis())
                 //.setCompanionInfo(companionInfo)
-                //.setCompanionFeatureInfo(companionFeatureInfo)
+                .setCompanionFeatureInfo(companionFeatureInfo)
                 .build();
     }
 

@@ -6,8 +6,8 @@ Just install the apk to your phone~
 
 # GlassRevive-Android
 * 需要解决高并发，虽然我并不觉得有这个需求。（就当锻炼自己了
-* 现在需要重新做一个队列，来处理所有的消息，大致的构想是service来处理连接，然后再清理队列
-* iOS这边可能暂时不太想做。。。（懒，手头还要完善Shiori项目，实现自己的几个设想
+* 现在需要重新做一个队列，来处理所有的消息，大致的构想是service来处理连接，然后再清理队列（完成了）
+* iOS这边可能暂时不太想做。。。（懒
 
 # 状态/Status
 * iOS支持我还在研究，可能使用esp32做数据转发
@@ -24,6 +24,7 @@ Just install the apk to your phone~
 * [x]NotificationListener
 * [x]Google Glass Proto
 * [x]Google Glass Bluetooth Support
+* [x]Google Photo Sync Support
 
 
 # 特殊感谢/Special thanks

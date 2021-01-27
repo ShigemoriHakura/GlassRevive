@@ -31,7 +31,7 @@ public class NotificationListener extends NotificationListenerService {
                 String nTitle = sbn.getNotification().extras.getString("android.title");
                 String nMessage = sbn.getNotification().extras.getString("android.text");
                 Log.d("NListener", "Get Message" + "-----" + nMessage);
-                SharedPreferences sharedPreferences = getSharedPreferences("MyNewGlass", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("GlassRevive", MODE_PRIVATE);
                 int expirationTime = sharedPreferences.getInt("expirationTime",60 * 5);
                 boolean enableTTS = sharedPreferences.getBoolean("enableTTS",false);
                 Intent intent = new Intent("com.hakura.GlassRevive.timeline");

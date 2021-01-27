@@ -50,11 +50,11 @@ message CompanionFeatureInfo{
 }
 
 message Photo {
-  optional int64 numOfPhotosToSync_ = 10;
-  optional int64 op_ = 8;
-  optional string photoId_ = 4;
   optional bytes thumbnailBytes_ = 1;
   optional int64 timestamp_ = 2;
+  optional string photoId_ = 3;
+  optional int64 op_ = 4;
+  optional int64 numOfPhotosToSync_ = 5;
 }
 
 message ApiRequest {
