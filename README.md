@@ -4,6 +4,8 @@ Revive Google Glass in 2021.
 不需要安装眼镜端app。  
 Just install the apk to your phone~  
 
+# 倒卖的给我死全家，什么垃圾玩意啊
+
 # XE25
 * Customized apks for myself
 
